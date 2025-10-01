@@ -8,7 +8,10 @@
         <n-button @click="onTurnOff">
           Turn Off
         </n-button>
-        <n-color-picker :onUpdate:value="onUpdateColor" />
+        <n-button @click="onConnectToWifi">
+          Connect to WiFi
+        </n-button>
+        <n-color-picker :onUpdateValue="onUpdateColor" />
         <n-button @click="setLampColor">Set lamp color</n-button>
       </div>
     </n-card>
@@ -22,11 +25,6 @@ import {ref} from "vue";
 const isLampOn = ref(false);
 const lampColor = ref('');
 
-const toggleLamp = () => {
-  isLampOn.value = !isLampOn.value;
-  handleToggleLampCb()
-}
-
 const handleToggleLampCb = () => {
   if (isLampOn.value) {
     onTurnOn()
@@ -36,13 +34,17 @@ const handleToggleLampCb = () => {
   }
 }
 
+const onConnectToWifi = () => {
+  LampService.setWifyMode();
+}
+
 const onUpdateColor = (value: string) => {
   lampColor.value = value
-  LampService.setLampColor(lampColor.value.slice(5, -1).replace(/\s+/g, ""))
+  LampService.setLampColor(lampColor.value.replace(/\s+/g, ""))
 }
 
 const setLampColor = () => {
-  LampService.setLampColor(lampColor.value.slice(5, -1).replace(/\s+/g, ""))
+  LampService.setLampColor(lampColor.value.replace(/\s+/g, ""))
 }
 
 const onTurnOn = () => {
